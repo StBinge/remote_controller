@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #pad{
+            background-color: aqua;
+            /* aspect-ratio: 4/3; */
+            outline: 1px solid red;
+            border: 1px solid red;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pad"></canvas>
+    <script>
+        
+        
+        
+        let pad=document.querySelector('#pad')
+        let pad_rect=pad.getBoundingClientRect()
+        let offset_x=pad_rect.left
+        let offset_y=pad_rect.top
+        // console.log(offset_x,offset_y)
+        // let canvas_width=client_width
+        // let canvas_height=client_height
+        // if (client_width/client_width>4/3){
+        //     canvas_width=client_height/3 *4
+        // }else{
+        //     canvas_height=client_width/4*3
+        // }
+        pad.width=client_width
+        pad.height=client_height/2
+
+        
+
+        
+        function drawLine(ctx,x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1-offset_x, y1-offset_y);
+            ctx.lineTo(x2-offset_x, y2-offset_y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        async function send_movement(x1,y1,x2,y2){
+            console.debug('Send movement:',(x2-x1,y2-y1))
+            const api=`http://localhost:9191/move?x=${x2-x1}&y=${y2-y1}`
+            const res=await fetch(api)
+            if (res.ok==false){
+                console.error('Send movement error!',await res.text)
+            }
+        }
+    </script>
+</body>
+</html>
